@@ -1,8 +1,6 @@
 import os
 import time
 import platform
-import hashlib
-import psutil
 
 #CONFIGURATION
 WATCH_PATH = os.path.join(os.getcwd(),"test_install_fold")
@@ -11,35 +9,17 @@ LOG_FILE = "behavior_log.txt"
 
 #Behavioral Settings
 DANGEROUS_EXTENSIONS = ['.exe', '.bat', '.vbs', '.ps1', '.cmd']
-SCAN_INTERVAL = 5
 SYSTEM_TYPE = platform.system()
 
 
 def timestamp():
     return time.strftime("%Y-%m-%d %H:%M:%S")
-def log(file, message):
+def log_event(message):
     """Savea alerts to a text file so you can review them later."""
     entry = f"[{timestamp()}] {message}"
     print(entry)
-    with open(file, "a") as f:
+    with open(SECURITY_LOG, "a") as f:
         f.write(entry + "\n")
-
-def load_malicious_hashes():
-    if not os.path.exists("malicious_hashes.txt"):
-        return set()
-    with open("malicious_hashes.txt", "r") as f:
-        return set(line.strip() for line in f if line.strip())
-
-def sha256(file_path):
-    h = hashlib.sha256()
-    try:
-        with open(file_path, "rb") as f:
-            for chunk in iter(lambda: f.read(4096), b""):
-                h.update(chunk)
-        return h.hexdigest()
-    except Exception:
-        return None
-
         
 def log_behavior(message):
     entry = f"[{timestamp()}] {message}"
@@ -65,11 +45,6 @@ def analyze_file_behavior(file_path):
             log_behavior(f"INFO: Large file created -> {name} ({file_size:.2f}KB)")
     except OSError:
         log_event(f"ERROR: Cloud not acces {name}")
-        
-    #3. Check file Hash
-    file_hash = sha256(file_path)
-    if file_hash and file_hash in MALICIOUS_HASHES:
-        log(SECURITY_LOG, f" MALWARE HASH MATCH: {name} | {file_hash}")
         
 def monitor_files(known_files):
     current_files = set(os.listdir(WATCH_PATH))
