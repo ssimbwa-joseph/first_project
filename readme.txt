@@ -94,7 +94,7 @@ python -m pip install psutil
 
 ---
 
-## Setup & Usage
+## ⚙️ Setup & Usage
 
 ### Clone or Download
 
@@ -127,7 +127,7 @@ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 ###  Run the Tool
 
 ```bash
-python3 first.py
+python m.py
 ```
 
 Press **CTRL+C** to stop safely.
@@ -153,7 +153,7 @@ Press **CTRL+C** to stop safely.
 
 ---
 
-##Future Improvements
+##Future Improvements (Planned)
 
 * Camera & microphone usage detection
 * Automatic file quarantine
