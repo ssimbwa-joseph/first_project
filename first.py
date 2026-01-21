@@ -84,16 +84,42 @@ def monitor_files(known_files):
             
     return current_files
 
+def monitor_processes(known):
+    current = set()
+    for p in psutil.process_iter(['pid', 'name']):
+        try:
+            current.add(p.info['name'])
+        except Exception:
+            pass
+
+    new = current - known
+    for proc in new:
+        log(LOG_FILE, f" New process started: {proc}")
+
+    return current
+
+def monitor_network():
+    for conn in psutil.net_connections(kind='inet'):
+        if conn.raddr and conn.status == psutil.CONN_ESTABLISHED:
+            log(LOG_FILE,
+                f"🌐 PID {conn.pid} -> {conn.raddr.ip}:{conn.raddr.port}")
+
 if __name__ == "__main__":
     print("---Behavioral Sentionel Active ---")
     
     if not os.path.exists(WATCH_PATH):
         os.makedirs(WATCH_PATH)
-        
+    MALICIOUS_HASHES = load_malicious_hashes()
+    log(LOG_FILE, f"Loaded {len(MALICIOUS_HASHES)} malicious hashes")
+   
     known_files = set(os.listdir(WATCH_PATH))
+    known_processes = set(p.name() for p in psutil.process_iter())
+    
     try: 
         while True:
             known_files = monitor_files(known_files)
+            known_processes = monitor_processes(known_processes)
+            monitor_network()
             time.sleep(5)
     except KeyboardInterrupt:
         print("Shutting down...")
