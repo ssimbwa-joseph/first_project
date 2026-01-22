@@ -6,8 +6,9 @@ import psutil
 
 #CONFIGURATION
 WATCH_PATH = os.path.join(os.getcwd(),"test_install_fold")
-LOG_FILE = "security_log.txt"
-LOG_FILE = "behavior_log.txt"
+SECURITY_LOG= "security_log.txt"
+BEHAVIOR_LOG = "behavior_log.txt"
+LOG_FILE = "general_log.txt" #For process and network logs
 
 #Behavioral Settings
 DANGEROUS_EXTENSIONS = ['.exe', '.bat', '.vbs', '.ps1', '.cmd']
@@ -62,9 +63,9 @@ def analyze_file_behavior(file_path):
         if size == 0:
             log_behavior(f"BEHAVIOR ALERT: Empty file created (potential placeholder) -> {name}")
         elif size > 50_000: #50MB
-            log_behavior(f"INFO: Large file created -> {name} ({file_size:.2f}KB)")
+            log_behavior(f"INFO: Large file created -> {name} ({size:.2f}KB)")
     except OSError:
-        log_event(f"ERROR: Cloud not acces {name}")
+        log_behavior(f"ERROR: Cloud not acces {name}")
         
     #3. Check file Hash
     file_hash = sha256(file_path)
@@ -77,7 +78,7 @@ def monitor_files(known_files):
     
     if new_files:
         if len(new_files) > 10:
-           log_behavior(f"WARNING: Mass file creation detected ({len(new_files)} filesS)")
+           log_behavior(f"WARNING: Mass file creation detected ({len(new_files)} files)")
         for file in new_files:
             full_path = os.path.join(WATCH_PATH, file)
             analyze_file_behavior(full_path)
@@ -88,24 +89,30 @@ def monitor_processes(known):
     current = set()
     for p in psutil.process_iter(['pid', 'name']):
         try:
-            current.add(p.info['name'])
+            current.add((p.info['pid'], p.info['name']))
         except Exception:
             pass
 
     new = current - known
-    for proc in new:
-        log(LOG_FILE, f" New process started: {proc}")
+    """for proc in new:
+        log(LOG_FILE, f" New process started: {proc}")"""
+    
+    for pid, name in new:
+        log(LOG_FILE, f"New process started: {name} (PID {pid})")
 
     return current
 
 def monitor_network():
+    seen_connections = set()
     for conn in psutil.net_connections(kind='inet'):
         if conn.raddr and conn.status == psutil.CONN_ESTABLISHED:
-            log(LOG_FILE,
-                f"🌐 PID {conn.pid} -> {conn.raddr.ip}:{conn.raddr.port}")
+            conn_id = (conn.pid, conn.raddr.ip, conn.raddr.port)
+            if conn_id in seen_connections:
+                log(LOG_FILE, f" PID {conn.pid} -> {conn.raddr.ip}:{conn.raddr.port}")
+                seen_connections.add(conn_id)
 
 if __name__ == "__main__":
-    print("---Behavioral Sentionel Active ---")
+    print("--- Behavioral Sentionel Active ---")
     
     if not os.path.exists(WATCH_PATH):
         os.makedirs(WATCH_PATH)
@@ -113,14 +120,16 @@ if __name__ == "__main__":
     log(LOG_FILE, f"Loaded {len(MALICIOUS_HASHES)} malicious hashes")
    
     known_files = set(os.listdir(WATCH_PATH))
-    known_processes = set(p.name() for p in psutil.process_iter())
+    known_processes = set(
+        (p.info['pid'], p.info['name'])
+        for p in psutil.process_iter(['pid', 'name']))    
     
     try: 
         while True:
             known_files = monitor_files(known_files)
             known_processes = monitor_processes(known_processes)
             monitor_network()
-            time.sleep(5)
+            time.sleep(SCAN_INTERVAL)
     except KeyboardInterrupt:
         print("Shutting down...")
     

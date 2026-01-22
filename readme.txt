@@ -135,12 +135,15 @@ Press **CTRL+C** to stop safely.
 ---
 
 ##  Output Files
-
-| File                 | Description                     |
+    
+   * general_log.txt
+"" | File                 | Description                     |
 | -------------------- | ------------------------------- |
 | `security_log.txt`   | High-risk alerts and detections |
 | `behavior_log.txt`   | Behavioral observations         |
-| `test_install_fold/` | Monitored directory             |
+| `test_install_fold/` | Monitored directory             | """
+
+ 
 
 ---
 
