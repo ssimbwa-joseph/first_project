@@ -1,0 +1,118 @@
+[2026-01-22 15:06:27] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:06:32] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:06:37] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:06:42] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:06:47] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:06:52] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:06:57] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:07:02] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:07:07] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:07:12] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:07:17] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:07:22] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:07:27] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:07:32] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:07:37] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:07:42] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:07:47] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:07:52] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:07:57] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:08:02] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:08:07] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:08:12] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:08:17] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:08:22] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:08:27] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:08:33] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:08:38] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:08:43] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:08:48] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:08:53] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:08:58] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:09:03] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:09:08] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:09:13] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:09:18] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:09:23] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:09:28] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:09:33] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:09:38] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:09:43] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:09:48] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:09:53] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:09:58] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:10:03] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:10:08] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:10:13] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:10:18] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:10:23] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:10:28] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:10:33] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:10:38] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:10:43] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:10:48] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:10:53] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:10:58] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:11:03] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:11:08] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:11:13] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:11:18] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:11:23] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:11:28] CRITICAL: High-risk system behavior detected
+[2026-01-22 15:21:03] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:21:08] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:21:13] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:21:18] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:21:23] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:21:28] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:21:33] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:21:38] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:21:43] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:21:48] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:21:53] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:21:58] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:22:03] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:22:08] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:22:13] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:22:18] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:22:23] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:22:28] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:22:33] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:22:38] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:22:43] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:22:48] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:22:53] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:22:58] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:23:03] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:23:08] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:23:13] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:23:18] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:23:23] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:23:28] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:23:33] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:23:38] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:23:43] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:23:48] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:23:53] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 15:23:58] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Network Activity
+[2026-01-22 17:14:06] WARNING: Elevated risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-22 17:14:11] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-22 17:14:17] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-22 17:14:22] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-22 17:14:27] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-22 17:14:33] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-22 17:14:38] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-22 17:14:43] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-22 17:58:11] WARNING: Elevated risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-22 17:58:16] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-23 01:05:13] WARNING: Elevated risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-23 01:05:18] WARNING: Elevated risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-23 01:05:23] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-23 01:05:28] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-23 01:05:33] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:05:38] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:05:43] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:05:48] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:05:53] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:05:58] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:06:04] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity

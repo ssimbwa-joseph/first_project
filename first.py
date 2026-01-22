@@ -3,27 +3,85 @@ import time
 import platform
 import hashlib
 import psutil
+import json
 
-#CONFIGURATION
-WATCH_PATH = os.path.join(os.getcwd(),"test_install_fold")
-SECURITY_LOG= "security_log.txt"
+# ==================== CONFIGURATION ====================
+WATCH_PATH = os.path.join(os.getcwd(), "test_install_fold")
+SECURITY_LOG = "security_log.txt"
 BEHAVIOR_LOG = "behavior_log.txt"
-LOG_FILE = "general_log.txt" #For process and network logs
+LOG_FILE = "general_log.txt"
+JSON_LOG = "events.json"
 
-#Behavioral Settings
 DANGEROUS_EXTENSIONS = ['.exe', '.bat', '.vbs', '.ps1', '.cmd']
 SCAN_INTERVAL = 5
 SYSTEM_TYPE = platform.system()
 
+RISK_SCORE = 0
+RISK_TYPES = set()
+
+RISK_CATEGORIES = {
+    "MALWARE": "Malware Activity",
+    "EXECUTION": "Suspicious Execution",
+    "FILE": "Suspicious File Activity",
+    "NETWORK": "Suspicious Network Activity",
+    "PROCESS": "Suspicious Process Activity",
+    "PRIVACY": "Camera/Microphone Access",
+    "BEHAVIOR": "Abnormal System Behavior"
+}
 
 def timestamp():
     return time.strftime("%Y-%m-%d %H:%M:%S")
+
 def log(file, message):
-    """Savea alerts to a text file so you can review them later."""
     entry = f"[{timestamp()}] {message}"
     print(entry)
     with open(file, "a") as f:
         f.write(entry + "\n")
+
+def log_behavior(message):
+    entry = f"[{timestamp()}] {message}"
+    print(entry)
+    with open(BEHAVIOR_LOG, "a") as f:
+        f.write(entry + "\n")
+
+def log_json(event_type, severity, message, extra=None):
+    event = {
+        "timestamp": timestamp(),
+        "event_type": event_type,
+        "severity": severity,
+        "message": message,
+        "extra": extra or {}
+    }
+    with open(JSON_LOG, "a") as f:
+        f.write(json.dumps(event) + "\n")
+
+def add_risk(points, reason, risk_type):
+    global RISK_SCORE
+    RISK_SCORE += points
+    RISK_TYPES.add(risk_type)
+
+    readable = RISK_CATEGORIES.get(risk_type, risk_type)
+
+    log_behavior(
+        f"RISK +{points} [{readable}]: {reason} | Total Risk: {RISK_SCORE}"
+    )
+
+    log_json(
+        event_type="risk_score",
+        severity="info",
+        message=reason,
+        extra={
+            "points": points,
+            "total": RISK_SCORE,
+            "risk_type": risk_type,
+            "risk_name": readable
+        }
+    )
+
+def get_risk_summary():
+    if not RISK_TYPES:
+        return "No significant risks detected"
+    return ", ".join(sorted(RISK_CATEGORIES[r] for r in RISK_TYPES))
 
 def load_malicious_hashes():
     if not os.path.exists("malicious_hashes.txt"):
@@ -41,48 +99,38 @@ def sha256(file_path):
     except Exception:
         return None
 
-        
-def log_behavior(message):
-    entry = f"[{timestamp()}] {message}"
-    print(entry)
-    with open(BEHAVIOR_LOG, "a") as f:
-        f.write(entry + "\n")
-        
 def analyze_file_behavior(file_path):
-    """Analyzes a specific file for suspicious traits."""
     name = os.path.basename(file_path)
-    extension = os.path.splitext(name) [1].lower()
-    
-    #1. Check for danerous extensions
+    extension = os.path.splitext(name)[1].lower()
+
     if extension in DANGEROUS_EXTENSIONS:
-        log_behavior(f"SUSPICIOUS BEHAVIOR: Executable file created -> {name}")
-    
-    #2. Check file size (malware is often very small or very large)
+        add_risk(10, f"Executable file created: {name}", "EXECUTION")
+
     try:
-        size = os.path.getsize(file_path) / 1024 #SIZE IN KB
+        size = os.path.getsize(file_path) / 1024
         if size == 0:
-            log_behavior(f"BEHAVIOR ALERT: Empty file created (potential placeholder) -> {name}")
-        elif size > 50_000: #50MB
-            log_behavior(f"INFO: Large file created -> {name} ({size:.2f}KB)")
+            add_risk(5, f"Empty file created: {name}", "FILE")
+        elif size > 50_000:
+            log_behavior(f"INFO: Large file created -> {name} ({size:.2f} KB)")
     except OSError:
-        log_behavior(f"ERROR: Cloud not acces {name}")
-        
-    #3. Check file Hash
+        log_behavior(f"ERROR: Could not access file {name}")
+
     file_hash = sha256(file_path)
     if file_hash and file_hash in MALICIOUS_HASHES:
-        log(SECURITY_LOG, f" MALWARE HASH MATCH: {name} | {file_hash}")
-        
+        add_risk(50, f"Malware hash match: {name}", "MALWARE")
+        log(SECURITY_LOG, f"MALWARE HASH MATCH: {name} | {file_hash}")
+
 def monitor_files(known_files):
     current_files = set(os.listdir(WATCH_PATH))
     new_files = current_files - known_files
-    
+
     if new_files:
         if len(new_files) > 10:
-           log_behavior(f"WARNING: Mass file creation detected ({len(new_files)} files)")
-        for file in new_files:
-            full_path = os.path.join(WATCH_PATH, file)
-            analyze_file_behavior(full_path)
-            
+            add_risk(20, "Mass file creation detected", "BEHAVIOR")
+
+        for f in new_files:
+            analyze_file_behavior(os.path.join(WATCH_PATH, f))
+
     return current_files
 
 def monitor_processes(known):
@@ -94,17 +142,15 @@ def monitor_processes(known):
             pass
 
     new = current - known
-    """for proc in new:
-        log(LOG_FILE, f" New process started: {proc}")"""
-    
     for pid, name in new:
         log(LOG_FILE, f"New process started: {name} (PID {pid})")
+        add_risk(5, f"New process started: {name}", "PROCESS")
 
     return current
 
+seen_connections = {}
 def monitor_network():
     global seen_connections 
-    seen_connections = {}
     for conn in psutil.net_connections(kind='inet'):
         try:
             pid = conn.pid if conn.pid is not None else -1
@@ -129,25 +175,59 @@ def monitor_network():
         except Exception:
             pass
 
+def detect_camera_mic_usage():
+    if SYSTEM_TYPE != "Windows":
+        return
+
+    keywords = ["camera", "webcam", "mic", "microphone", "audio"]
+    for p in psutil.process_iter(['pid', 'name']):
+        try:
+            pname = p.info['name'].lower()
+            for k in keywords:
+                if k in pname:
+                    add_risk(
+                        30,
+                        f"Possible camera/mic usage by {p.info['name']}",
+                        "PRIVACY"
+                    )
+                    log_json(
+                        "camera_mic_access",
+                        "high",
+                        "Possible camera/microphone usage detected",
+                        {"pid": p.info['pid'], "process": p.info['name']}
+                    )
+        except Exception:
+            pass
+
+def check_risk_thresholds():
+    summary = get_risk_summary()
+
+    if RISK_SCORE >= 100:
+        log(SECURITY_LOG, f"CRITICAL: High-risk behavior detected | Risks: {summary}")
+    elif RISK_SCORE >= 50:
+        log(SECURITY_LOG, f"WARNING: Elevated risk behavior detected | Risks: {summary}")
+
 if __name__ == "__main__":
-    print("--- Behavioral Sentionel Active ---")
-    
-    if not os.path.exists(WATCH_PATH):
-        os.makedirs(WATCH_PATH)
+    print("--- Behavioral Sentinel Active ---")
+
+    os.makedirs(WATCH_PATH, exist_ok=True)
+
     MALICIOUS_HASHES = load_malicious_hashes()
     log(LOG_FILE, f"Loaded {len(MALICIOUS_HASHES)} malicious hashes")
-   
+
     known_files = set(os.listdir(WATCH_PATH))
     known_processes = set(
         (p.info['pid'], p.info['name'])
-        for p in psutil.process_iter(['pid', 'name']))    
-    
-    try: 
+        for p in psutil.process_iter(['pid', 'name'])
+    )
+
+    try:
         while True:
             known_files = monitor_files(known_files)
             known_processes = monitor_processes(known_processes)
             monitor_network()
+            detect_camera_mic_usage()
+            check_risk_thresholds()
             time.sleep(SCAN_INTERVAL)
     except KeyboardInterrupt:
         print("Shutting down...")
-    
