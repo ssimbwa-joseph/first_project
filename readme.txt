@@ -49,7 +49,7 @@ This project monitors file activity, running processes, and network connections 
   * `security_log.txt`
   * `behavior_log.txt`
 
----
+--
 
 ### Can Detect
 
@@ -135,15 +135,12 @@ Press **CTRL+C** to stop safely.
 ---
 
 ##  Output Files
-    
-   * general_log.txt
-"" | File                 | Description                     |
+
+| File                 | Description                     |
 | -------------------- | ------------------------------- |
 | `security_log.txt`   | High-risk alerts and detections |
 | `behavior_log.txt`   | Behavioral observations         |
-| `test_install_fold/` | Monitored directory             | """
-
- 
+| `test_install_fold/` | Monitored directory             |
 
 ---
 
