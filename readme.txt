@@ -1,10 +1,27 @@
          FIRST " How it may look like"
 
-# Behavioral Sentinel
+# Behavioral_Sentinel_Active
 
 A lightweight **Endpoint Detection & Response (EDR)**–style monitoring tool written in Python.
-This project monitors file activity, running processes, and network connections to help detect **suspicious or unknown behavior** on a system.
+This project helps monitors file activity, running processes, and network connections to help detect **suspicious or unknown behavior** on a system.
 
+# Problems
+
+Background activities on a computer range from necessary system maintenance to malicious surveillance. 
+These software sometimes are built at somepoint they can be seen by the TaskManager, Nmap etc
+If someone has installed monitoring software or has administrative access (especially on work computers). 
+They can perform a wide range of tasks without your direct knowledge but for the benefit of the other party.
+      *running Crypto mining on it.
+      *training AI modules 
+      *worms
+      *Trojan Horses
+      *spyware etc
+
+# solution
+
+The system is going to be help since for it will be fecthing the data direct from the hardware, e.g "CPU, RAM, Disk, Camera and mic, Network usage etc."
+It will detect files to if they are malicious or not.
+It will detect the actives which are runing on the pc and also it store the histry in its database for future forensics.
 
 ## Features
 
@@ -91,10 +108,22 @@ or
 
 python -m pip install psutil
 ```
+pip install fastapi
+
+or
+
+python -m pip install fastapi
 
 ---
+pip install requests
 
-## ⚙️ Setup & Usage
+or
+
+python3 -m pip install requests
+---
+     For Linux user you will need add a " sude " command for admin privileges.
+
+##  Setup & Usage
 
 ### Clone or Download
 
@@ -136,11 +165,13 @@ Press **CTRL+C** to stop safely.
 
 ##  Output Files
 
-| File                 | Description                     |
-| -------------------- | ------------------------------- |
-| `security_log.txt`   | High-risk alerts and detections |
-| `behavior_log.txt`   | Behavioral observations         |
-| `test_install_fold/` | Monitored directory             |
+| File                  Description                     |
+| --------------------  ------------------------------- |
+| `security_log.txt`    High-risk alerts and detections |
+| `behavior_log.txt`    Behavioral observations         |
+| `test_install_fold/`  Monitored directory             |
+| `general_log.txt`     All the process out
+| `event.json`          json observation
 
 ---
 
@@ -153,10 +184,23 @@ Press **CTRL+C** to stop safely.
 
 ---
 
-##Future Improvements (Planned)
+## Those have been added 
 
 * Camera & microphone usage detection
 * Automatic file quarantine
 * Risk scoring system
+
+##What to do next
+
+Now that your environment is ready, you can start the system. Because they are separate files, you must start them in this specific order:
+
+   * Start the Brain: Run python3 first_database_api.py
+   * Start the Worker: Run python3 first.py
+   * Start the View: Run python first_gui.py
+
+##FutureT Improvements (Planned)
 * Startup persistence detection
 * Background service mode
+*Intergrating it to work with Nmap and it can install on our system automatically with the use of API.
+*Intergrating it to work with taskmanager in our GUI
+*Interducing in AI and machine learning in it to work as an Anti-Virus for other malware actives.
