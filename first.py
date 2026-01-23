@@ -4,8 +4,7 @@ import platform
 import hashlib
 import psutil
 import json
-
-# ==================== CONFIGURATION ====================
+API_URL = "http://127.0.0.1:8000/log"
 WATCH_PATH = os.path.join(os.getcwd(), "test_install_fold")
 SECURITY_LOG = "security_log.txt"
 BEHAVIOR_LOG = "behavior_log.txt"
@@ -15,6 +14,12 @@ JSON_LOG = "events.json"
 DANGEROUS_EXTENSIONS = ['.exe', '.bat', '.vbs', '.ps1', '.cmd']
 SCAN_INTERVAL = 5
 SYSTEM_TYPE = platform.system()
+os.makedirs(WATCH_PATH, exist_ok=True)
+
+def send_to_api(e_type, msg, score, extra=""):
+    try:
+        requests.post(API_URL, json={"event_type": e_type, "message": msg, "risk_score": score, "extra": extra}, timeout=1)
+    except: pass
 
 RISK_SCORE = 0
 RISK_TYPES = set()
@@ -65,6 +70,7 @@ def add_risk(points, reason, risk_type):
     log_behavior(
         f"RISK +{points} [{readable}]: {reason} | Total Risk: {RISK_SCORE}"
     )
+    log_behavior(f"RISK +{points}: {reason}")
 
     log_json(
         event_type="risk_score",
@@ -77,6 +83,7 @@ def add_risk(points, reason, risk_type):
             "risk_name": readable
         }
     )
+    send_to_api(e_type=risk_type, msg=reason, score=points, extra=f"Total: {RISK_SCORE}")
 
 def get_risk_summary():
     if not RISK_TYPES:

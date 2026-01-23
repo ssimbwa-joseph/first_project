@@ -4,8 +4,7 @@ import json
 import threading
 import tkinter as tk
 from tkinter import ttk, scrolledtext
-
-# ==================== INTEGRATED ENGINE & GUI ====================
+import requests
 
 class SentinelPro:
     def __init__(self, root):
@@ -78,42 +77,38 @@ class SentinelPro:
         print("[*] Dashboard Logs Cleared")
 
     def update_ui(self):
-        """Processes only NEW lines from the JSON log."""
-        if os.path.exists("events.json"):
-            with open("events.json", "r") as f:
-                lines = f.readlines()
-            
-            # Only process lines we haven't seen yet
-            new_lines = lines[self.last_line_count:]
-            self.last_line_count = len(lines)
-            
-            current_score = 0
-            for line in new_lines:
-                try:
-                    data = json.loads(line.strip())
-                    msg = f"[{data['timestamp']}] {data['message']}\n"
-                    e_type = data['event_type']
+        """Fetches data from the API only, preventing local file-read lag."""
+        try:
+            r = requests.get("http://127.0.0.1:8000/alerts", timeout=0.5)
+            if r.status_code == 200:
+                events = r.json()
+                
+                for log in [self.status_log, self.file_log, self.proc_log, self.net_log]:
+                    log.delete(1.0, tk.END)
+
+                current_total_risk = 0
+                for e in events:
+                    msg = f"[{e['time']}] {e['msg']}\n"
+                    e_type = e['type']
                     
-                    if e_type == "risk_score":
-                        current_score = data['extra']['total']
-                        self.status_log.insert(tk.END, msg)
-                        self.status_log.see(tk.END) # Auto-scroll
-                    elif e_type in ["EXECUTION", "FILE"]:
-                        self.file_log.insert(tk.END, msg)
-                        self.file_log.see(tk.END)
-                    elif e_type == "PROCESS":
+                    if e_type == "PROCESS":
                         self.proc_log.insert(tk.END, msg)
-                        self.proc_log.see(tk.END)
-                    elif "network" in e_type.lower() or e_type == "NETWORK":
+                    elif e_type in ["FILE", "EXECUTION"]:
+                        self.file_log.insert(tk.END, msg)
+                    elif e_type == "NETWORK":
                         self.net_log.insert(tk.END, msg)
-                        self.net_log.see(tk.END)
-                        
-                    # Visual risk update
-                    self.risk_var.set(f"RISK SCORE: {current_score}")
-                    if current_score > 100: self.risk_label.config(fg="red")
-                    elif current_score > 50: self.risk_label.config(fg="orange")
-                    else: self.risk_label.config(fg="#00ff00")
-                except: continue
+                    
+                    self.status_log.insert(tk.END, f"[{e['time']}] {e['type']}: {e['msg']}\n")
+                    current_total_risk += e['score']
+
+                self.risk_var.set(f"RISK SCORE: {current_total_risk}")
+                if current_total_risk > 100: self.risk_label.config(fg="red")
+                elif current_total_risk > 50: self.risk_label.config(fg="orange")
+                else: self.risk_label.config(fg="#00ff00")
+        except Exception as e:
+            self.status_indicator.config(text="● API OFFLINE", fg="red")
+        
+        self.root.after(2000, self.update_ui)
 
         self.root.after(2000, self.update_ui)
 
