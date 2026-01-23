@@ -7,7 +7,7 @@ from datetime import datetime
 app = FastAPI()
 
 def init_db():
-    conn = sqlite3.connect("sentinel_pro.db")
+    conn = sqlite3.connect("Behavioral_Sentinel_Active.db")
     conn.execute('''CREATE TABLE IF NOT EXISTS alerts 
         (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp TEXT, 
          event_type TEXT, message TEXT, risk_score INTEGER, extra TEXT)''')
@@ -21,7 +21,7 @@ class Alert(BaseModel):
 
 @app.post("/log")
 async def log_event(data: Alert):
-    conn = sqlite3.connect("sentinel_pro.db")
+    conn = sqlite3.connect("Behavioral_Sentinel_Active.db")
     conn.execute("INSERT INTO alerts (timestamp, event_type, message, risk_score, extra) VALUES (?,?,?,?,?)",
                  (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), data.event_type, data.message, data.risk_score, data.extra))
     conn.commit()
@@ -30,7 +30,7 @@ async def log_event(data: Alert):
 
 @app.get("/alerts")
 async def get_alerts():
-    conn = sqlite3.connect("sentinel_pro.db")
+    conn = sqlite3.connect("Behavioral_Sentinel_Active.db")
     cursor = conn.cursor()
     cursor.execute("SELECT timestamp, event_type, message, risk_score, extra FROM alerts ORDER BY id DESC LIMIT 50")
     rows = cursor.fetchall()
