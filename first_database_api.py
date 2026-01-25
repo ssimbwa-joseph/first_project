@@ -14,6 +14,7 @@ def init_db():
     conn.close()
 
 class Alert(BaseModel):
+    timestamp: str
     event_type: str
     message: str
     risk_score: int
@@ -23,7 +24,7 @@ class Alert(BaseModel):
 async def log_event(data: Alert):
     conn = sqlite3.connect("Behavioral_Sentinel_Active.db")
     conn.execute("INSERT INTO alerts (timestamp, event_type, message, risk_score, extra) VALUES (?,?,?,?,?)",
-                 (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), data.event_type, data.message, data.risk_score, data.extra))
+                 (data.timestamp, data.event_type, data.message, data.risk_score, data.extra))
     conn.commit()
     conn.close()
     return {"status": "success"}
@@ -31,11 +32,12 @@ async def log_event(data: Alert):
 @app.get("/alerts")
 async def get_alerts():
     conn = sqlite3.connect("Behavioral_Sentinel_Active.db")
+    # Inserting exactly what the scanner sends
     cursor = conn.cursor()
     cursor.execute("SELECT timestamp, event_type, message, risk_score, extra FROM alerts ORDER BY id DESC LIMIT 50")
     rows = cursor.fetchall()
     conn.close()
-    return [{"time": r[0], "type": r[1], "msg": r[2], "score": r[3], "extra": r[4]} for r in rows]
+    return [{"timestamp": r[0], "event_type": r[1], "message": r[2], "risk_score": r[3], "extra": r[4]} for r in rows]
 
 if __name__ == "__main__":
     init_db()

@@ -4,6 +4,8 @@ import platform
 import hashlib
 import psutil
 import json
+import requests
+
 API_URL = "http://127.0.0.1:8000/log"
 WATCH_PATH = os.path.join(os.getcwd(), "test_install_fold")
 SECURITY_LOG = "security_log.txt"
@@ -16,10 +18,13 @@ SCAN_INTERVAL = 5
 SYSTEM_TYPE = platform.system()
 os.makedirs(WATCH_PATH, exist_ok=True)
 
-def send_to_api(e_type, msg, score, extra=""):
+def timestamp():
+    return time.strftime("%Y-%m-%d %H:%M:%S")
+def send_to_api(t_stamp, e_type, msg, score, extra=""):
     try:
-        requests.post(API_URL, json={"event_type": e_type, "message": msg, "risk_score": score, "extra": extra}, timeout=1)
-    except: pass
+        requests.post(API_URL, json={"timestamp": t_stamp, "event_type": e_type, "message": msg, "risk_score": score, "extra": extra}, timeout=1)
+    except Exception as e:
+        print(f"API send error: {e}")
 
 RISK_SCORE = 0
 RISK_TYPES = set()
@@ -63,8 +68,11 @@ def log_json(event_type, severity, message, extra=None):
 def add_risk(points, reason, risk_type):
     global RISK_SCORE
     RISK_SCORE += points
+    
+    send_to_api(t_stamp=timestamp(), e_type=risk_type, msg=reason, score=points, extra=f"Total Risk: {RISK_SCORE}")
+    
     RISK_TYPES.add(risk_type)
-
+    
     readable = RISK_CATEGORIES.get(risk_type, risk_type)
 
     log_behavior(
@@ -130,6 +138,8 @@ def analyze_file_behavior(file_path):
 def monitor_files(known_files):
     current_files = set(os.listdir(WATCH_PATH))
     new_files = current_files - known_files
+    for f in new_files:
+        add_risk(10, f"New file created: {f}", "FILE")
 
     if new_files:
         if len(new_files) > 10:
@@ -140,18 +150,18 @@ def monitor_files(known_files):
 
     return current_files
 
-def monitor_processes(known):
-    current = set()
+def monitor_processes(known_processes):
+    current = set((p.info['pid'], p.info['name']) for p in psutil.process_iter(['pid', 'name']))
     for p in psutil.process_iter(['pid', 'name']):
         try:
             current.add((p.info['pid'], p.info['name']))
         except Exception:
             pass
 
-    new = current - known
+    new = current - known_processes
     for pid, name in new:
         log(LOG_FILE, f"New process started: {name} (PID {pid})")
-        add_risk(5, f"New process started: {name}", "PROCESS")
+        add_risk(5, f"New process: {name} (PID: {pid})", "PROCESS")
 
     return current
 

@@ -114,23 +114,30 @@ class Behavioral_Sentinel_Active:
         
         for e in events:
             # MATCHING THE API KEYS: timestamp, event_type, message, risk_score
-            t_stamp = e.get('time', 'N/A')
-            e_type = e.get('type', 'INFO')
-            message = e.get('msg', 'No details provided.')
+            t_stamp = e.get('timestamp', 'N/A')
+            e_type = str(e.get('event_type', 'INFO')).upper()
+            msg = e.get('message', 'No details provided.')
             score = e.get('risk_score', 0)
 
-            formatted_msg = f"[{t_stamp}] {message}\n"
+            formatted_msg = f"[{t_stamp}] {msg}\n"
 
             # Sorting into the correcttabs
             if e_type == "PROCESS":
                 self.proc_log.insert(tk.END, formatted_msg)
+                self.proc_log.see(tk.END)
+                
             elif e_type in ["FILE", "EXECUTION", "MALWARE"]:
                 self.file_log.insert(tk.END, formatted_msg)
+                self.file_log.see(tk.END)
+                
             elif e_type == "NETWORK":
                 self.net_log.insert(tk.END, formatted_msg)
+                self.net_log.see(tk.END)
             
             #always add to the Dashboard (All Events)        
-            self.status_log.insert(tk.END, f"[{t_stamp}] {e_type}: {message}\n")
+            self.status_log.insert(tk.END, f"[{t_stamp}] {e_type}: {msg}\n")
+            self.status_log.see(tk.END)
+            
             current_total_risk += score
             
         #Update risk score display   
