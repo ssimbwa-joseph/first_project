@@ -116,3 +116,49 @@
 [2026-01-23 01:05:53] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
 [2026-01-23 01:05:58] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
 [2026-01-23 01:06:04] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:06:09] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:06:14] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:06:19] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:06:24] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:06:29] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:06:34] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:06:39] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:06:44] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:06:49] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:06:54] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:06:59] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:07:04] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:07:09] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:07:14] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:07:19] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:07:24] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:07:29] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:07:34] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:07:39] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:07:44] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:07:49] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:07:54] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:07:59] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:08:04] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:08:10] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:08:15] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:08:20] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:08:25] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:08:30] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:08:35] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:08:40] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 01:08:45] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 09:33:32] WARNING: Elevated risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-23 09:33:37] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 09:33:42] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 09:46:02] WARNING: Elevated risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-23 09:46:07] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-23 09:46:12] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-23 09:46:17] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-23 09:46:22] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 10:06:11] WARNING: Elevated risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-23 10:06:16] WARNING: Elevated risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-23 10:06:21] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-23 14:21:22] WARNING: Elevated risk behavior detected | Risks: Camera/Microphone Access, Suspicious Process Activity
+[2026-01-23 14:37:59] WARNING: Elevated risk behavior detected | Risks: Camera/Microphone Access
+[2026-01-23 14:38:04] CRITICAL: High-risk behavior detected | Risks: Camera/Microphone Access

@@ -163,6 +163,10 @@ Press **CTRL+C** to stop safely.
 
 ---
 
+## GPU 
+ 
+  *you will have to run the first_launch.bat to run the all system at once.
+
 ##  Output Files
 
 | File                  Description                     |

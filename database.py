@@ -4,7 +4,7 @@ from models import Base
 import os
 
 # Database URL: default to SQLite, support PostgreSQL via env var
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///sentinel.db")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///Behavioral_Sentinel_Active.db")
 
 engine = create_engine(DATABASE_URL, echo=True)  # Set echo=False in production
 
