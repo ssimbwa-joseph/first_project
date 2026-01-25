@@ -22,6 +22,15 @@ SCAN_INTERVAL = 5
 SYSTEM_TYPE = platform.system()
 os.makedirs(WATCH_PATH, exist_ok=True)
 
+# file behavior risk scores
+FILE_RISK = {
+    "created": 3,
+    "mass_create": 15,
+    "empty": 2,
+    "executable": 10,
+    "large": 1,
+}
+
 def timestamp():
     return time.strftime("%Y-%m-%d %H:%M:%S")
 def send_to_api(t_stamp, e_type, msg, score, extra=""):
@@ -121,37 +130,69 @@ def analyze_file_behavior(file_path):
     name = os.path.basename(file_path)
     extension = os.path.splitext(name)[1].lower()
 
+    # Always show file creation
+    add_risk(
+        FILE_RISK["created"],
+        f"File created: {name}",
+        "FILE"
+    )
+
+    # Executable detection
     if extension in DANGEROUS_EXTENSIONS:
-        add_risk(10, f"Executable file created: {name}", "EXECUTION")
+        add_risk(
+            FILE_RISK["executable"],
+            f"Executable file created: {name}",
+            "EXECUTION"
+        )
 
     try:
-        size = os.path.getsize(file_path) / 1024
-        if size == 0:
-            add_risk(5, f"Empty file created: {name}", "FILE")
-        elif size > 50_000:
-            log_behavior(f"INFO: Large file created -> {name} ({size:.2f} KB)")
+        size_kb = os.path.getsize(file_path) / 1024
+
+        if size_kb == 0:
+            add_risk(
+                FILE_RISK["empty"],
+                f"Empty file created: {name}",
+                "FILE"
+            )
+
+        elif size_kb > 50_000:
+            # Info-level, still visible
+            add_risk(
+                FILE_RISK["large"],
+                f"Large file created: {name} ({size_kb:.1f} KB)",
+                "FILE"
+            )
+
     except OSError:
         log_behavior(f"ERROR: Could not access file {name}")
 
+    # Malware hash check
     file_hash = sha256(file_path)
     if file_hash and file_hash in MALICIOUS_HASHES:
-        add_risk(50, f"Malware hash match: {name}", "MALWARE")
+        add_risk(
+            50,
+            f"Malware hash match: {name}",
+            "MALWARE"
+        )
         log(SECURITY_LOG, f"MALWARE HASH MATCH: {name} | {file_hash}")
 
 def monitor_files(known_files):
     current_files = set(os.listdir(WATCH_PATH))
     new_files = current_files - known_files
-    for f in new_files:
-        add_risk(10, f"New file created: {f}", "FILE")
-
     if new_files:
+        # Mass creation detection
         if len(new_files) > 10:
-            add_risk(20, "Mass file creation detected", "BEHAVIOR")
+            add_risk(
+                FILE_RISK["mass_create"],
+                f"Mass file creation detected ({len(new_files)} files)",
+                "BEHAVIOR"
+            )
 
         for f in new_files:
             analyze_file_behavior(os.path.join(WATCH_PATH, f))
 
     return current_files
+
 
 def monitor_processes(known_processes):
     current = set((p.info['pid'], p.info['name']) for p in psutil.process_iter(['pid', 'name']))
