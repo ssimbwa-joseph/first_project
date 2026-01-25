@@ -6,6 +6,7 @@ import tkinter as tk
 from tkinter import ttk, scrolledtext
 import requests
 
+API_URL = "http://127.0.0.1:8000/alerts"
 class Behavioral_Sentinel_Active:
     def __init__(self, root):
         self.root = root

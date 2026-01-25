@@ -5,14 +5,7 @@ import uvicorn
 from datetime import datetime
 
 app = FastAPI()
-
-def init_db():
-    conn = sqlite3.connect("Behavioral_Sentinel_Active.db")
-    conn.execute('''CREATE TABLE IF NOT EXISTS alerts 
-        (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp TEXT, 
-         event_type TEXT, message TEXT, risk_score INTEGER, extra TEXT)''')
-    conn.close()
-
+db = "Behavioral_Sentinel_Active.db"
 class Alert(BaseModel):
     timestamp: str
     event_type: str
@@ -20,11 +13,19 @@ class Alert(BaseModel):
     risk_score: int
     extra: str = ""
 
+def init_db():
+    conn = sqlite3.connect("Behavioral_Sentinel_Active.db")
+    conn.execute
+    ("""CREATE TABLE IF NOT EXISTS alerts 
+        (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp TEXT, 
+         event_type TEXT, message TEXT, risk_score INTEGER, extra TEXT)""")
+    conn.close()
+
 @app.post("/log")
 async def log_event(data: Alert):
     conn = sqlite3.connect("Behavioral_Sentinel_Active.db")
     conn.execute("INSERT INTO alerts (timestamp, event_type, message, risk_score, extra) VALUES (?,?,?,?,?)",
-                 (data.timestamp, data.event_type, data.message, data.risk_score, data.extra))
+          (data.timestamp, data.event_type, data.message, data.risk_score, data.extra))
     conn.commit()
     conn.close()
     return {"status": "success"}

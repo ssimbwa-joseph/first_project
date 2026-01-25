@@ -13,6 +13,10 @@ BEHAVIOR_LOG = "behavior_log.txt"
 LOG_FILE = "general_log.txt"
 JSON_LOG = "events.json"
 
+# --- PRIVACY COOLDOWN (prevents spam) ---
+LAST_PRIVACY_ALERT = {}
+seen_connections = {}
+PRIVACY_COOLDOWN = 60  # seconds
 DANGEROUS_EXTENSIONS = ['.exe', '.bat', '.vbs', '.ps1', '.cmd']
 SCAN_INTERVAL = 5
 SYSTEM_TYPE = platform.system()
@@ -91,7 +95,6 @@ def add_risk(points, reason, risk_type):
             "risk_name": readable
         }
     )
-    send_to_api(e_type=risk_type, msg=reason, score=points, extra=f"Total: {RISK_SCORE}")
 
 def get_risk_summary():
     if not RISK_TYPES:
@@ -167,7 +170,8 @@ def monitor_processes(known_processes):
 
 seen_connections = {}
 def monitor_network():
-    global seen_connections 
+    global seen_connections
+
     for conn in psutil.net_connections(kind='inet'):
         try:
             pid = conn.pid if conn.pid is not None else -1
@@ -178,15 +182,26 @@ def monitor_network():
 
             conn_id = (pid, laddr, raddr)
 
-            # Log new connections or state changes
+            # New connection or state change
             if conn_id not in seen_connections or seen_connections[conn_id] != status:
-                # Attempt to get process name
+
                 try:
                     proc_name = psutil.Process(pid).name() if pid > 0 else "Unknown"
                 except Exception:
                     proc_name = "Unknown"
 
-                log(LOG_FILE,f"NETWORK [{status}] {proc_name} (PID {pid}) {laddr} -> {raddr}")
+                message = f"{proc_name} (PID {pid}) {laddr} -> {raddr} [{status}]"
+
+                #  THIS is what makes it show in the GUI
+                add_risk(
+                    2,
+                    message,
+                    "NETWORK"
+                )
+
+                # Keep your original file logging
+                log(LOG_FILE, f"NETWORK {message}")
+
                 seen_connections[conn_id] = status
 
         except Exception:
@@ -196,25 +211,41 @@ def detect_camera_mic_usage():
     if SYSTEM_TYPE != "Windows":
         return
 
+    now = time.time()
     keywords = ["camera", "webcam", "mic", "microphone", "audio"]
+
     for p in psutil.process_iter(['pid', 'name']):
         try:
-            pname = p.info['name'].lower()
-            for k in keywords:
-                if k in pname:
-                    add_risk(
-                        30,
-                        f"Possible camera/mic usage by {p.info['name']}",
-                        "PRIVACY"
-                    )
-                    log_json(
-                        "camera_mic_access",
-                        "high",
-                        "Possible camera/microphone usage detected",
-                        {"pid": p.info['pid'], "process": p.info['name']}
-                    )
+            pname = p.info['name']
+            lname = pname.lower()
+
+            if any(k in lname for k in keywords):
+                last = LAST_PRIVACY_ALERT.get(pname, 0)
+
+                # Cooldown check
+                if now - last < PRIVACY_COOLDOWN:
+                    continue
+
+                LAST_PRIVACY_ALERT[pname] = now
+
+                add_risk(
+                    30,
+                    f"Possible camera/mic usage by {pname}",
+                    "PRIVACY"
+                )
+
+                log_json(
+                    "camera_mic_access",
+                    "high",
+                    "Possible camera/microphone usage detected",
+                    {
+                        "pid": p.info['pid'],
+                        "process": pname
+                    }
+                )
         except Exception:
             pass
+
 
 def check_risk_thresholds():
     summary = get_risk_summary()
